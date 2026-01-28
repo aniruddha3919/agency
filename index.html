@@ -337,8 +337,27 @@
                         and drive sales</p>
                 </div>
 
-                <div class="relative">
-                    <div class="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory no-scrollbar"
+                <div class="relative group/carousel">
+                    <!-- Navigation Buttons -->
+                    <div
+                        class="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-6 right-0 -right-4 md:-right-6 flex justify-between pointer-events-none z-30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
+                        <button id="carousel-prev"
+                            class="p-3 bg-white shadow-xl rounded-full text-slate-900 border border-slate-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all pointer-events-auto transform hover:scale-110 active:scale-95">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button id="carousel-next"
+                            class="p-3 bg-white shadow-xl rounded-full text-slate-900 border border-slate-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all pointer-events-auto transform hover:scale-110 active:scale-95">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory no-scrollbar scroll-smooth"
                         id="carousel-container">
                         <!-- Carousel Item 1 -->
                         <div
@@ -348,7 +367,7 @@
                                     alt="Educational infographic carousel post with colorful design and statistics about digital marketing strategies"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             </div>
-                            
+
                         </div>
 
                         <!-- Carousel Item 2 -->
@@ -359,7 +378,7 @@
                                     alt="Promotional offer carousel displaying limited time discount with bold typography and vibrant colors"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             </div>
-                            
+
                         </div>
 
                         <!-- Carousel Item 3 -->
@@ -370,7 +389,7 @@
                                     alt="Brand storytelling carousel featuring founder journey and company values with authentic photography"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             </div>
-                            
+
                         </div>
 
                         <!-- Carousel Item 4 -->
@@ -381,7 +400,7 @@
                                     alt="Data visualization carousel showing business growth metrics and customer success statistics"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -490,7 +509,7 @@
                     </div>
                 </div>
 
-                <p class="text-center text-slate-500 text-sm mt-8 italic">Customer website links will be provided</p>
+                <p class="text-center text-slate-500 text-sm mt-8 italic">Customer website links</p>
             </div>
         </div>
     </section>
@@ -1380,6 +1399,38 @@
                 }
             });
         });
+
+        // Carousel Navigation
+        const carouselContainer = document.getElementById('carousel-container');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+
+        if (carouselContainer && prevBtn && nextBtn) {
+            const scrollAmount = () => {
+                const item = carouselContainer.querySelector('.carousel-item');
+                return item ? item.offsetWidth + 24 : 400; // Width + gap
+            };
+
+            nextBtn.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+            });
+
+            prevBtn.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+            });
+
+            // Optional: Hide/Show buttons based on scroll position
+            carouselContainer.addEventListener('scroll', () => {
+                const isAtStart = carouselContainer.scrollLeft <= 0;
+                const isAtEnd = carouselContainer.scrollLeft + carouselContainer.offsetWidth >= carouselContainer.scrollWidth - 10;
+
+                prevBtn.style.opacity = isAtStart ? '0.3' : '1';
+                prevBtn.style.pointerEvents = isAtStart ? 'none' : 'auto';
+
+                nextBtn.style.opacity = isAtEnd ? '0.3' : '1';
+                nextBtn.style.pointerEvents = isAtEnd ? 'none' : 'auto';
+            });
+        }
     </script>
     <script id="dhws-dataInjector" src="/public/dhws-data-injector.js"></script>
 </body>
